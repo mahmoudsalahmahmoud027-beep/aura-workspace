@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --aura-bg: #f8f9fb;
+    --aura-surface: #ffffff;
+    --aura-surface-subtle: #f1f3f7;
+    --aura-surface-hover: #e8ecf2;
+    --aura-border: #e2e6ed;
+    --aura-border-subtle: #edf0f5;
+    --aura-text-primary: #111827;
+    --aura-text-secondary: #4b5563;
+    --aura-text-muted: #838e9e;
+    --aura-accent: #5551ff;
+    --aura-accent-hover: #4338ca;
+  }
+
+  .dark {
+    --aura-bg: #0b0d13;
+    --aura-surface: #12151e;
+    --aura-surface-subtle: #171b26;
+    --aura-surface-hover: #1f2433;
+    --aura-border: #212738;
+    --aura-border-subtle: #191e2b;
+    --aura-text-primary: #f3f4f6;
+    --aura-text-secondary: #9ca3af;
+    --aura-text-muted: #64748b;
+    --aura-accent: #6366f1;
+    --aura-accent-hover: #818cf8;
+  }
+
+  body {
+    background-color: var(--aura-bg);
+    color: var(--aura-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(99, 102, 241, 0.25);
+  color: inherit;
+}
+
