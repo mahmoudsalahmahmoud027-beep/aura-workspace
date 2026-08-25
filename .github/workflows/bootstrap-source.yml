@@ -17,7 +17,11 @@ jobs:
           set -euo pipefail
           : > source.tar.xz
           for f in .bootstrap-parts/*.txt; do
-            tr -d '\r\n' < "$f" | base64 -d >> source.tar.xz
+            echo "Decoding $f"
+            if ! tr -d '\r\n' < "$f" | base64 -d >> source.tar.xz; then
+              echo "Invalid Base64 in $f"
+              exit 1
+            fi
           done
           echo "a7aa3b180b17bf26adc5569ca00bef15fe7329f1206b9345eb9d98cf704ea9b4  source.tar.xz" | sha256sum -c -
           xz -dc source.tar.xz | tar -xf -
