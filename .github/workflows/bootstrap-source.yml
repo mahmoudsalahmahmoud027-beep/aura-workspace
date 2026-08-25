@@ -15,7 +15,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap-parts/*.txt | tr -d '\r\n' | base64 -d > source.tar.xz
+          : > source.tar.xz
+          for f in .bootstrap-parts/*.txt; do
+            tr -d '\r\n' < "$f" | base64 -d >> source.tar.xz
+          done
           echo "a7aa3b180b17bf26adc5569ca00bef15fe7329f1206b9345eb9d98cf704ea9b4  source.tar.xz" | sha256sum -c -
           xz -dc source.tar.xz | tar -xf -
           find . -maxdepth 1 -type d -name '.bootstrap*' -exec rm -rf {} +
