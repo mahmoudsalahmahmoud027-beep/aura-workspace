@@ -2,6 +2,7 @@ name: Bootstrap source
 on:
   push:
     paths:
+      - ".bootstrap/source.tar.xz"
       - ".github/workflows/bootstrap-source.yml"
   workflow_dispatch:
 permissions:
@@ -15,13 +16,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap-xz/*.txt | tr -d '\r\n' | base64 -d > source.tar.xz
-          xz -dc source.tar.xz | tar -xf -
-          rm -rf .bootstrap-xz .bootstrap source.tar.xz
+          xz -dc .bootstrap/source.tar.xz | tar -xf -
+          rm -rf .bootstrap .bootstrap-xz .github/workflows/bootstrap-source.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          if git diff --cached --quiet; then exit 0; fi
           git commit -m "feat: publish project source"
           git push
-# trigger: complete archive
