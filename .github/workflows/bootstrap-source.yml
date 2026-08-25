@@ -1,23 +1,25 @@
-name: Bootstrap source
+name: Publish source
 on:
   push:
     paths:
-      - ".bootstrap/source.tar.xz"
       - ".github/workflows/bootstrap-source.yml"
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
-  restore:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Restore source
+      - name: Verify and publish source
         shell: bash
         run: |
           set -euo pipefail
-          xz -dc .bootstrap/source.tar.xz | tar -xf -
-          rm -rf .bootstrap .bootstrap-xz .github/workflows/bootstrap-source.yml
+          cat .bootstrap-parts/*.txt | tr -d '\r\n' | base64 -d > source.tar.xz
+          echo "a7aa3b180b17bf26adc5569ca00bef15fe7329f1206b9345eb9d98cf704ea9b4  source.tar.xz" | sha256sum -c -
+          xz -dc source.tar.xz | tar -xf -
+          find . -maxdepth 1 -type d -name '.bootstrap*' -exec rm -rf {} +
+          rm -f source.tar.xz .github/workflows/bootstrap-source.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
