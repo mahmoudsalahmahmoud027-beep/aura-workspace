@@ -4,12 +4,12 @@
   "private": true,
   "description": "n8n runtime branch for Render",
   "engines": {
-    "node": ">=22 <25"
+    "node": ">=24 <27"
   },
   "scripts": {
     "start": "n8n start"
   },
   "dependencies": {
-    "n8n": "latest"
+    "n8n": "2.37.10"
   }
 }
