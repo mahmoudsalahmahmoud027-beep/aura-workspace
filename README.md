@@ -1,100 +1,68 @@
 # AURA
 
-> **Repository:** `mahmoudsalahmahmoud027-beep/aura-workspace`  
-> **Status:** Portfolio project · source release
-
 AURA is a local-first productivity workspace that combines daily planning, tasks, projects, notes, focus sessions, quick capture, and a context-aware assistant in one interface.
 
-The application is designed to remain useful without an AI connection. Core workspace features run locally, while the optional assistant can use Gemini through the server when a key is configured.
+The project is designed around a simple principle: core productivity features should remain useful even when remote services are unavailable.
 
-## Features
+## Highlights
 
-- **Today** — daily focus, prioritized work, upcoming deadlines, and a deterministic next-action recommendation
-- **Tasks** — list, board, and Eisenhower-style views with priorities, tags, deadlines, subtasks, and project links
-- **Projects** — project workspaces with milestones, related tasks, notes, and activity
-- **Notes** — Markdown editing, search, pinning, favorites, tags, and project relationships
-- **Focus** — preset and custom focus sessions with optional task/project attachment, focus sounds, and session history
-- **Quick Capture** — save thoughts quickly and convert them into structured workspace items
-- **Assistant** — persistent conversations, rename/pin controls, retry, stop generation, copy, and contextual workspace grounding
-- **Command Palette** — `Ctrl/Cmd + K` navigation, search, and common actions
-- **Themes & persistence** — dark/light appearance and browser-local workspace persistence
+- Today view with priorities, deadlines, and deterministic next-action recommendations
+- Task management with priorities, tags, deadlines, subtasks, projects, and multiple views
+- Project workspaces with milestones, related tasks, notes, and activity
+- Markdown notes with search, pinning, favorites, tags, and project relationships
+- Focus sessions with optional task/project context and session history
+- Quick Capture for turning unstructured input into organized workspace items
+- Persistent assistant conversations with retry, stop, copy, rename, and pin controls
+- Context-aware assistant boundary that can use workspace state without inventing application data
+- Command palette and keyboard-first navigation
+- Local persistence and graceful offline fallback behavior
+- Responsive interface with light and dark appearance support
+
+## Architecture
+
+AURA separates product state, UI features, persistence, and external intelligence access.
+
+```text
+src/components/   product views and shared UI
+src/context/      workspace state and actions
+src/data/         initial workspace data
+src/services/     assistant and supporting service boundaries
+src/types/        domain models
+server.ts         optional remote assistant boundary
+```
+
+The browser owns the workspace state. External model access is isolated behind a server boundary so credentials are never bundled into the client.
+
+If the remote provider is unavailable, the application falls back to deterministic workspace-aware behavior instead of making the rest of the product unusable.
 
 ## Tech Stack
 
 - React 19
 - TypeScript
 - Vite
-- Express
+- Node.js / Express
 - Tailwind CSS
-- Lucide Icons
 - Motion
-- Google GenAI SDK (optional server-side assistant)
-- Web Audio API
-
-## Architecture
-
-AURA separates workspace state, UI features, and external AI access. The browser owns the local workspace state and persistence, while the Express server provides the optional Gemini boundary so API credentials are not embedded in the client bundle.
-
-The assistant receives a structured snapshot of relevant workspace context rather than inventing task or project state independently.
+- Lucide Icons
 
 ## Local Development
 
-### Requirements
-
-- Node.js 20+
-
-### Install
-
 ```bash
 npm install
-```
-
-### Run
-
-```bash
 npm run dev
 ```
 
-### Production build
+Production checks:
 
 ```bash
+npm run lint
 npm run build
 ```
 
-## Optional Gemini Integration
+## Configuration
 
-Copy `.env.example` to `.env` and configure `GEMINI_API_KEY`.
+Remote assistant access is optional and configured through environment variables on the server. Secrets are not committed to the repository or exposed in the browser bundle.
 
-```bash
-cp .env.example .env
-```
+## Engineering Focus
 
-The API key is read by the server only. Do not commit `.env` files or production credentials.
-
-If Gemini is unavailable, the workspace remains usable and the assistant falls back to local deterministic behavior.
-
-## Data & Privacy
-
-Workspace data is stored locally in the browser for this portfolio build. No account or cloud database is required for the core experience.
-
-## Keyboard Shortcuts
-
-- `Ctrl/Cmd + K` — command palette
-- `Escape` — close active overlays/dialogs
-- Arrow keys + `Enter` — navigate command-palette results
-
-## Project Structure
-
-```text
-src/
-  components/      Feature and shared UI components
-  context/         Workspace state and actions
-  data/            Demo workspace data
-  services/        Assistant and supporting services
-  types/           TypeScript domain models
-server.ts          Express server and optional Gemini endpoint
-```
-
-## Status
-
-Portfolio release. Core productivity features work locally; remote AI functionality requires an optional server-side provider key.
+AURA demonstrates local-first product architecture, contextual model integration, graceful degradation, explicit server boundaries, persistent conversation UX, and responsive application design.
